@@ -9,15 +9,12 @@ const App = () => {
     const [showAll, setShowAll] = useState(true)
 
     useEffect(() => {
-        console.log('effect')
         axios
             .get('https://restcountries.eu/rest/v2/all')
             .then(response => {
-                console.log('promise fulfilled')
                 setCountries(response.data)
             })
     }, [])
-    console.log('render', countries.length, 'notes')
 
     const countriesToShow = showAll
         ? countries
@@ -28,6 +25,9 @@ const App = () => {
         }
         )
 
+    const handleShow = (country) => {
+        setSearchName(country.name)
+    }
 
     const handleSearchName = (event) => {
         console.log(event.target.value)
@@ -45,6 +45,7 @@ const App = () => {
             <div>debug: {searchName}</div>
             <Countries
                 countries={countriesToShow}
+                handleShow={handleShow}
             />
         </div>
     )
