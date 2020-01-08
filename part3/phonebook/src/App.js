@@ -22,7 +22,7 @@ const App = () => {
                 setPersons(response)
             })
             .catch(error => {
-                setMessageType(`Can not load phonebook data`);
+                setMessageType(`Can not load phonebook data, ${error.response.data.error}`);
                 setTimeout(() => {
                     setMessageType(null)
                 }, 5000);
@@ -44,6 +44,7 @@ const App = () => {
         const contactObject = {
             name: newName,
             number: newNumber,
+            id: ''
         }
 
         if (persons.some(e => e.name === contactObject.name)) {
@@ -52,13 +53,14 @@ const App = () => {
                 personService
                     .update(matchName.id, contactObject)
                     .then(response => {
+                        contactObject.id = matchName.id
                         let newPersons = persons.filter(person => person.id !== matchName.id)
                         newPersons = [...newPersons, contactObject]
                         setPersons(newPersons)
                         infoMessage(`Updated ${contactObject.name}`, 'note');
                     })
                     .catch(error => {
-                        infoMessage(`Information of ${newName} has already been removed from server`, 'error')
+                        infoMessage(`Information of ${newName} has already been removed from server, ${error.response.data.error}`, 'error')
                     })
             }
 
@@ -86,17 +88,19 @@ const App = () => {
         }, 5000);
     }
 
-    const deleteContact = (id) => {
-        personService
-            .remove(id)
-            .then(response => {
-                setPersons(persons.filter(person => person.id !== id))
-                infoMessage(`Deleted ${id}`, 'note')
-            })
-            .catch(error => {
-                infoMessage(`Information of ${id} has already been removed from server ${error.response.data}`, 'error')
-            })
+    const deleteContact = (id, name) => {
 
+        if (window.confirm(`Delete ${name} ?`)) {
+            personService
+                .remove(id)
+                .then(response => {
+                    setPersons(persons.filter(person => person.id !== id))
+                    infoMessage(`Deleted ${name}`, 'note')
+                })
+                .catch(error => {
+                    infoMessage(`Information of ${name} has already been removed from server, ${error.response.data}`, 'error')
+                })
+        }
     }
 
     const handleNameChange = (event) => {
