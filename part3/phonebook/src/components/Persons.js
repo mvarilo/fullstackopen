@@ -2,11 +2,10 @@ import React from 'react'
 
 const Persons = ({ persons, onDelete }) => {
 
-    function deletePerson(id, name) {
+    const deletePerson = (id, name) => {
         if (window.confirm(`Delete ${name} ?`)) {
             onDelete(id);
         }
-        return;
     }
 
     return (

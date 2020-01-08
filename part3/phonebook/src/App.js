@@ -44,15 +44,15 @@ const App = () => {
         const contactObject = {
             name: newName,
             number: newNumber,
-            id: newName,
         }
 
         if (persons.some(e => e.name === contactObject.name)) {
+            let matchName = persons.find(person => person.name === contactObject.name)
             if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
                 personService
-                    .update(contactObject.id, contactObject)
+                    .update(matchName.id, contactObject)
                     .then(response => {
-                        let newPersons = persons.filter(person => person.id !== contactObject.id)
+                        let newPersons = persons.filter(person => person.id !== matchName.id)
                         newPersons = [...newPersons, contactObject]
                         setPersons(newPersons)
                         infoMessage(`Updated ${contactObject.name}`, 'note');
@@ -70,7 +70,7 @@ const App = () => {
                     infoMessage(`Added ${contactObject.name}`, 'note')
                 })
                 .catch(error => {
-                    infoMessage(`Information of ${newName} could not be created`, 'error')
+                    infoMessage(`Information of ${newName} could not be created, ${error.response.data.error}`, 'error')
                 })
 
         }
@@ -94,7 +94,7 @@ const App = () => {
                 infoMessage(`Deleted ${id}`, 'note')
             })
             .catch(error => {
-                infoMessage(`Information of ${id} has already been removed from server`, 'error')
+                infoMessage(`Information of ${id} has already been removed from server ${error.response.data}`, 'error')
             })
 
     }
