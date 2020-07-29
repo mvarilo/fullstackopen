@@ -7,6 +7,8 @@ const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
+const config = { headers: { Authorization: token } }
+
 const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
@@ -26,4 +28,15 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, update, setToken }
+const remove = (id, auth) => {
+  setToken(auth)
+  const authoriz = { headers: { Authorization: token } }
+
+  console.log('auth', auth)
+  console.log('config', config)
+
+  const request = axios.delete(`${baseUrl}/${id}`, authoriz)
+  return request.then(response => response.data)
+}
+
+export default { getAll, create, update, setToken, remove }
