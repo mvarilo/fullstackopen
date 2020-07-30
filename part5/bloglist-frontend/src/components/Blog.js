@@ -60,20 +60,20 @@ const Blog = ({ blog, setBlogs, setUpdate, user, handleLike }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className="blog-wrapper" style={blogStyle}>
       <div style={hideWhenVisible}>
         <div className="titleauthor">
           {blog.title} {blog.author}
-          <button onClick={show}>view</button>
+          <button id="view" onClick={show}>view</button>
         </div>
       </div>
       <div style={showWhenVisible} className="likedelete">
         {blog.title} {blog.author}
         <button onClick={hide}>hide</button> <br />
         {blog.url} <br />
-        <div onClick={updateBlog}>
+        <div className="blog-likes" onClick={updateBlog}>
           likes {blog.likes}
-          <button type="submit">like</button>
+          <button id="like" type="submit">like</button>
         </div>
         <div onClick={deleteBlog} style={hideWhenNotOwned}>
           added by {blog.user.name}
@@ -91,11 +91,11 @@ Blog.propTypes = {
     author: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     likes: PropTypes.number.isRequired,
-    user: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      username: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }),
+    // user: PropTypes.shape({
+    //   id: PropTypes.string.isRequired,
+    //   username: PropTypes.string.isRequired,
+    //   name: PropTypes.string.isRequired,
+    // }),
   }),
   // setBlogs: PropTypes.func.isRequired,
   // setUpdate: PropTypes.func.isRequired,

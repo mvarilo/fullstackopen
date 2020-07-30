@@ -2,3 +2,4 @@
 /node_modules/
 part2/countries/src/config
 part3/phonebook-backend/.env
+part6/redux-anecdotes-master/node_modules/
